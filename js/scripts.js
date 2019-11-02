@@ -9,5 +9,20 @@
 // const modalDiv = document.getElementsByClassName('.model-container');
 // const modalInfo = document.getElementsByClassName('.model-info-container');
 // const ModalBtnDiv = document.getElementsByClassName('.modal-btn-container');
+ const url = 'https://randomuser.me/api/?results=12';
+
+//       url = 'https://randomuser.me/api/?results=12&inc=picture,name,email,location';
 
 
+fetch(url)
+  .then(response => {
+    return response.json()
+  })
+  .then(data => {
+
+    console.log(data)
+  })
+  .catch(err => {
+    console.log(err)
+    
+  })
