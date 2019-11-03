@@ -1,17 +1,16 @@
 
 // const searchDiv = document.getElementById('#search-container');
 const galleryDiv = document.getElementById('gallery');
-// const cardArray = [];
-// const imageArray = []; 
+const cardArray = [];
+const imageArray = []; 
 // const cardInfo = document.getElementsByClassName('.card-info-container');
 // const cardDiv = document.getElementsByClassName('.card');
-// const modalDiv = document.getElementsByClassName('.model-container');
-// const modalInfo = document.getElementsByClassName('modal-info-container');
-// const ModalBtnDiv = document.getElementsByClassName('modal-btn-container');
+let modalDiv = document.getElementsByClassName('.model-container');
+const modalInfo = document.getElementsByClassName('modal-info-container');
+const ModalBtnDiv = document.getElementsByClassName('modal-btn-container');
 const url = 'https://randomuser.me/api/?results=12&nat=gl';
 let html = '';
 
-//       url = 'https://randomuser.me/api/?results=12&inc=picture,name,email,location';
 
 
 fetch(url)
@@ -36,13 +35,13 @@ function appendToDom(result) {
     let card = document.createElement('div');
     card.className = 'card'
     html = `<div class="card-img-container">
-              <img class="card-img" src="https://placehold.it/90x90" alt="profile picture">
+<img class="card-img" src=${result[i].picture.thumbnail} alt="profile picture">
           </div>
           <div class="card-info-container">
-              <h3 id="name" class="card-name cap">first last</h3>
-              <p class="card-text">email</p>
-              <p class="card-text cap">city, state</p>
-          </div>`
+              <h3 id="name" class="card-name cap">${result[i].name.first} ${result[i].last}</h3>
+              <p class="card-text">${result[i].email}</p>
+              <p class="card-text cap">${result[i].location.city}, ${result[i].location.state}</p>
+          </div>`;
 
       card.innerHTML = html;
       galleryDiv.append(card);
@@ -55,13 +54,20 @@ function appendToDom(result) {
   } 
 }
 
+function cardInfo(result, index) {
+  modalDiv.css('display', 'block');
+
+  modalInfo.append('<img class="modal-img" src="https://placehold.it/125x125" alt="profile picture">');
+  modalInfo.append('<h3 id="name" class="modal-name cap">name</h3>');
+}
+
   function searchFilter(result) {
     let searchInput = document.querySelector('#search-input');
     const card = document.querySelectorAll('.card');
     let searchSubmit = document.querySelector('#search-submit');
         searchSubmit.addEventListener('click', event => {
         event.preventDefault();
-        for (let i=0;  i < result.length; i++)
+        for (let i=0;  i<result.length; i++)
           if (result[i].name.first.toUpperCase().includes(searchInput.value.toUpperCase()) ) {
             card[i].style.display = 'flex';
           } else {
