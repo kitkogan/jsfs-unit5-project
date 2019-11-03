@@ -1,15 +1,15 @@
-// const searchInput = document.getElementById('#search-input');
-// const searchSubmit = document.getElementbyId('#search-submit');
+
 // const searchDiv = document.getElementById('#search-container');
-// const galleryDiv = document.getElementbyId('#gallery');
+const galleryDiv = document.getElementById('gallery');
 // const cardArray = [];
 // const imageArray = []; 
 // const cardInfo = document.getElementsByClassName('.card-info-container');
 // const cardDiv = document.getElementsByClassName('.card');
 // const modalDiv = document.getElementsByClassName('.model-container');
-// const modalInfo = document.getElementsByClassName('.model-info-container');
-// const ModalBtnDiv = document.getElementsByClassName('.modal-btn-container');
- const url = 'https://randomuser.me/api/?results=12';
+// const modalInfo = document.getElementsByClassName('modal-info-container');
+// const ModalBtnDiv = document.getElementsByClassName('modal-btn-container');
+const url = 'https://randomuser.me/api/?results=12&nat=gl';
+let html = '';
 
 //       url = 'https://randomuser.me/api/?results=12&inc=picture,name,email,location';
 
@@ -19,10 +19,48 @@ fetch(url)
     return response.json()
   })
   .then(data => {
-
-    console.log(data)
-  })
-  .catch(err => {
-    console.log(err)
+    appendToDom(data.results);
+    searchFilter(data.results)
     
   })
+  .catch(err => {
+    throw(err);
+    
+  }) // API accessed, data fetched. Screen displays data or error is thrown
+
+function appendToDom(result) {
+  for (let i=0; i<result.length; i++) {
+
+    let card = document.createElement('div');
+    card.className = 'card'
+    html = `<div class="card-img-container">
+              <img class="card-img" src="https://placehold.it/90x90" alt="profile picture">
+          </div>
+          <div class="card-info-container">
+              <h3 id="name" class="card-name cap">first last</h3>
+              <p class="card-text">email</p>
+              <p class="card-text cap">city, state</p>
+          </div>`
+
+      card.innerHTML = html;
+      galleryDiv.append(card);
+  }
+    
+
+
+  }
+
+  function searchFilter(result) {
+    let searchInput = document.querySelector('#search-input');
+    const card = document.querySelectorAll('.card');
+    const searchSubmit = document.getElementbyId('search-submit');
+      searchSubmit.addEventListener('click', event => {
+        event.preventDefault();
+        for (let i=0;  i < result.length; i++)
+          if (result[i].name.first.toUpperCase().includes(searchInput.val.toUpperCase()) ) {
+            card[i].style.display = 'flex';
+          } else {
+            card[i].style.disply = 'none';
+          }
+    })
+  }
