@@ -18,11 +18,13 @@ fetch(url)
   .then(response => {
     return response.json()
   })
+
   .then(data => {
-    appendToDom(data.results);
+    appendToDom(data.results); 
     searchFilter(data.results)
     
   })
+
   .catch(err => {
     throw(err);
     
@@ -44,23 +46,29 @@ function appendToDom(result) {
 
       card.innerHTML = html;
       galleryDiv.append(card);
-  }
+  // card div for info/image created. retrieved data appended to DOM.
+
+      card.addEventListener('click', () => {
+        cardInfo(result, i);
+      });
     
-
-
-  }
+  } 
+}
 
   function searchFilter(result) {
     let searchInput = document.querySelector('#search-input');
     const card = document.querySelectorAll('.card');
-    const searchSubmit = document.getElementbyId('search-submit');
-      searchSubmit.addEventListener('click', event => {
+    let searchSubmit = document.querySelector('#search-submit');
+        searchSubmit.addEventListener('click', event => {
         event.preventDefault();
         for (let i=0;  i < result.length; i++)
-          if (result[i].name.first.toUpperCase().includes(searchInput.val.toUpperCase()) ) {
+          if (result[i].name.first.toUpperCase().includes(searchInput.value.toUpperCase()) ) {
             card[i].style.display = 'flex';
           } else {
             card[i].style.disply = 'none';
           }
-    })
+    });
   }
+
+
+  modalDiv.css('display', 'none'); // hide modal on page load
