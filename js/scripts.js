@@ -57,8 +57,16 @@ function appendToDom(result) {
 function cardInfo(result, index) {
   modalDiv.css('display', 'block');
 
-  modalInfo.append('<img class="modal-img" src="https://placehold.it/125x125" alt="profile picture">');
-  modalInfo.append('<h3 id="name" class="modal-name cap">name</h3>');
+  modalInfo.append(`<img class="modal-img" src=${result[index].picture.thumbnail} alt="profile picture">`);
+  modalInfo.append(`<h3 id="name" class="modal-name cap">${result[index].name.first, $}{result[index].name.first}, ${result[index].name.last} </h3>`);
+  modalInfo.append(`<p> class="modal-text cap"> ${result[index].email} </p>`);
+  modalInfo.append(`<p class="modal-text cap"> ${result[index].location.city} </p> <hr>`);
+  modalInfo.append(`<p class="modal-text cap"> ${result[index].cell} </p>`)
+    let location = result[index].location;
+  modalInfo.append(`<p class="modal-text cap"> ${location.street}, ${location.city}, ${location.state} ${location.postcode} </p>`)
+    let date = result[index].dob.date;
+  modalInfoappend(`<p class="modal-text cap">Birthday: ${date.substring(5,7)}/${date.substring(8,10)}/${date.substring(0,4)}</p>`)
+
 }
 
   function searchFilter(result) {
