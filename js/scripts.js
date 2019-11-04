@@ -11,7 +11,7 @@ let results = [];
 // let modalDiv = $('.modal-container');
 let modalInfo = $('.modal-info-container');
 modalBtnDiv = $('modal-btn-container');
-// let html = '';
+
 
 getUsers('https://randomuser.me/api/?results=12&nat=gl')
   .catch( err => console.log(err) );
@@ -54,11 +54,19 @@ function createModal(user) {
   body.appendChild(modal);
 
   const birthday = new Date(user.dob.date);
-   let dob = birthday.getDate();
-   let mob = birthday.getMonth();
-   let yob = birthday.getFullYear();
+  let dob = birthday.getDate();
+  let mob = birthday.getMonth();
+  let yob = birthday.getFullYear();
  
-  
+  if(dob < 10) {
+    dob = '0' + dob;
+
+  }
+
+  if(mob < 10 ) {
+    mob = '0' + mob;
+
+  }
 
   const index = results.indexOf(user);
   var html = '';
@@ -87,78 +95,60 @@ function createModal(user) {
   html += `</div> </div>`;
 
   modal.innerHTML = html;
+
+
+const modalBtnClose = document.querySelector('#modal-close-btn');
+modalBtnClose.addEventListener('click', removeModal);
+
+const prevBtn = document.querySelector('#modal-prev');
+const nextBtn = document.querySelector('#modal-next');
+
+if(prevBtn) {
+  prevBtn.addEventListener('click', () => {
+    removeModal();
+    createModal(results[index - 1]);
+  });
+}
+
+if(nextBtn) {
+  nextBtn.addEventListener('click', () => {
+    removeModal();
+    createModal(results[index + 1]);
+  });
+}
+ function removeModal() {
+   body.removeChild(modal);
+ }
+ 
+}
+
+const form = document.createElement('form');
+form.setAttribute('action', '#');
+form.setAttribute('method', 'get');
+searchDiv.appendChild(form);
+searchDiv.innerHTML = `
+<input type="search" id="search-input" class="search-input" placeholder="Search...">
+<input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+`;
+
+const searchBtn = document.querySelector('#search-submit');
+searchBtn.addEventListener('click', searchUserList);
+
+
+function searchUserList() {
+  const searchInput = document.querySelector('#search-input').value;
+  const userList = document.querySelectorAll('.card h3');
+  const userDiv = document.querySelectorAll('.card');
+
+  for(let i = 0; i < userList.length; i++) {
+    if(userList[i].textContent.toUpperCase().includes(searchInput.toUpperCase())) {
+      userDiv[i].style.display = 'flex';
+    }
+    else {
+      userDiv[i].style.display = 'none';
+    }
+  }
 }
 
 
 
-
-
-
-
-// function toggleCard(result, index) {
-//   let prevBtn = $('#modal-prev');
-//   let nextBtn = $('modal-next');
-
-//   prevBtn.on('click', event => {
-//   index--;
-
-//     if (index >= 0) {
-//       modalInfo.empty();
-//       modalInfo.append(`<img class="modal-img" src=${result[index].picture.thumbnail} alt="profile picture">`)
-//       modalInfo.append(`<h3 id="name" class="modal-name cap"> ${result[index].name.first}, ${result[index].name.last} </h3>`)
-//       modalInfo.append(`<p class="modal-text"> ${result[index].email} </p>`)
-//       modalInfo.append(`<p class="modal-text cap"> ${result[index].location.city} </p> <hr>`);
-
-//       modalInfo.append(`<p class="modal-text"> ${result[index].cell} </p>`)
-//       let location = result[index].location;
-//       modalInfo.append(`<p class="modal-text"> ${location.street}, ${location.city}, ${location.state} ${location.postcode} </p>`)
-//       let date = reslut[index].dob.date;
-//       modalInfo.append(`<p class="modal-text">Birthday: ${date.substring(5,7)}/${date.substring(8,10)}/${date.substring(0,4)}</p>`);
-//     }
-    
-//     else if (index > 0) {
-//         index = 0;
-//     }
-//   });
-
-//   nextBtn.on('click', e => {
-//     index++;
-//     if (index <= 11) {
-//       modalInfo.empty();
-//       modalInfo.append(`<img class="modal-img" src=${result[index].picture.thumbnail} alt="profile picture">`)
-//       modalInfo.append(`<h3 id="name" class="modal-name cap"> ${result[index].name.first}, ${result[index].name.last} </h3>`)
-//       modalInfo.append(`<p class="modal-text"> ${result[index].email} </p>`)
-//       modalInfo.append(`<p class="modal-text cap"> ${result[index].location.city} </p> <hr>`);
-
-//       modalInfo.append(`<p class="modal-text"> ${result[index].cell} </p>`)
-//       let location = result[index].location;
-//       modalInfo.append(`<p class="modal-text"> ${location.street}, ${location.city}, ${location.state} ${location.postcode} </p>`)
-//       let date = result[index].dob.date;
-//       modalInfo.append(`<p class="modal-text">Birthday: ${date.substring(5,7)}/${date.substring(8,10)}/${date.substring(0,4)}</p>`);
-//     }
-//     else if (index > 11) {
-//       index = 11;
-//     }
-//     })
-
-
-//   function searchFilter(result) {
-//     let searchInput = document.querySelector('#search-input');
-  
-//     const card = document.querySelectorAll('.card');
-//     let searchSubmit = document.querySelector('#search-submit');
-//         searchSubmit.addEventListener('click', event => {
-//         event.preventDefault();
-//         for (let i=0;  i<result.length; i++)
-//           if (result[i].name.first.toUpperCase().includes(searchInput.value.toUpperCase()) ) {
-//             card[i].style.display = 'flex';
-//           } else {
-//             card[i].style.disply = 'none';
-//           }
-//     });
-//   }
-//   searchFilter(data.results)
-
-//   modalDiv.css('display', 'none');
-
-//   }
