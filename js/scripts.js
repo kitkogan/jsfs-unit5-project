@@ -7,7 +7,7 @@ const imageArray = [];
 // const cardDiv = document.getElementsByClassName('.card');
 let modalDiv = document.getElementsByClassName('.model-container');
 const modalInfo = document.getElementsByClassName('modal-info-container');
-const ModalBtnDiv = document.getElementsByClassName('modal-btn-container');
+const modalBtnDiv = document.getElementsByClassName('modal-btn-container');
 const url = 'https://randomuser.me/api/?results=12&nat=gl';
 let html = '';
 
@@ -65,9 +65,19 @@ function cardInfo(result, index) {
     let location = result[index].location;
   modalInfo.append(`<p class="modal-text cap"> ${location.street}, ${location.city}, ${location.state} ${location.postcode} </p>`)
     let date = result[index].dob.date;
-  modalInfoappend(`<p class="modal-text cap">Birthday: ${date.substring(5,7)}/${date.substring(8,10)}/${date.substring(0,4)}</p>`)
+  modalInfo.append(`<p class="modal-text cap">Birthday: ${date.substring(5,7)}/${date.substring(8,10)}/${date.substring(0,4)}</p>`)
+
+  toggleCard(result, index);
+
+  modalBtnDiv.on('click', () => {
+    modalInfo.empty();
+    modalDiv.css('display', 'none');
+  });
+
 
 }
+
+
 
   function searchFilter(result) {
     let searchInput = document.querySelector('#search-input');
